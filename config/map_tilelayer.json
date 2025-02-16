@@ -8,35 +8,5 @@
         "tiles": "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png",
         "name": "CartoDB Dark Matter",
         "attr": "Map tiles by CartoDB, under CC BY 3.0. Data by OpenStreetMap, under ODbL."
-    },
-    {
-        "tiles": "https://mt1.google.com/vt/lyrs=m&x={x}&y={y}&z={z}",
-        "attr": "Google",
-        "name": "Google Maps",
-        "max_zoom": 20
-    },
-    {
-        "tiles": "https://mt1.google.com/vt/lyrs=s&x={x}&y={y}&z={z}",
-        "attr": "Google",
-        "name": "Google Satellite",
-        "max_zoom": 22
-    },
-    {
-        "tiles": "https://mt1.google.com/vt/lyrs=y&x={x}&y={y}&z={z}",
-        "attr": "Google",
-        "name": "Google Hybrid",
-        "max_zoom": 20
-    },
-    {
-        "tiles": "https://mt1.google.com/vt/lyrs=p&x={x}&y={y}&z={z}",
-        "attr": "Google",
-        "name": "Google Terrain",
-        "max_zoom": 20
-    },
-    {
-        "tiles": "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
-        "attr": "Esri",
-        "name": "Esri Satellite",
-        "max_zoom": 20
     }
 ]
