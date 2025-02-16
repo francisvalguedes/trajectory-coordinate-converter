@@ -41,7 +41,7 @@ def main():
     ### Funcionalidades
     A aplicação possui quatro páginas principais:
                 
-    0. **Main**: Página de apresentação e cadastro de ponto de referência sensor.
+    0. **Main**: Página de apresentação e cadastro de ponto de referência sensor, o cadastro pode ser somente para a sessão atual ou definitivo a escolha do usuário.
     1. **Conversão entre Grau DMS e Decimal**: Converte coordenadas de graus(degree), minutos e segundos (DMS) para graus decimais ou o contrário.
     2. **Conversão de Coordenadas Geodésicas para ECEF e ENU Plano Local**: Converte coordenadas geodésicas para ECEF (Earth-Centered, Earth-Fixed), para ENU (East-North-Up) plano local e azimute, elevação e distância.
     3. **Conversão de Coordenadas Plano Local ENU (XYZ) ou Azimute, Elevação e Distância em ECEF e Geodésicas**: Converte coordenadas de plano local ENU (XYZ) ou azimute, elevação e distância para ECEF e coordenadas geodésicas (latitude, longitude e altitude).
