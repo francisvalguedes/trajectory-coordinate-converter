@@ -1,7 +1,7 @@
 # trajectory-coordinate-converter
 
 ## Descrição
-O `trajectory-coordinate-converter` é uma aplicação web desenvolvida com Streamlit que permite a conversão de coordenadas a partir de arquivos CSV ou manualmente. A aplicação utiliza as bibliotecas `pandas`, `numpy`, `pymap3d` e `Folium` para realizar as conversões necessárias e mostrar dados em um mapa. O ellipsoid WGS84 é utilizado como padrão.
+O `trajectory-coordinate-converter` é uma aplicação web desenvolvida com Streamlit que permite a conversão de coordenadas a partir de arquivos CSV ou manualmente. A aplicação utiliza as bibliotecas `pandas`, `numpy`, `pymap3d`, `plotly`  e `Folium` para realizar as conversões necessárias e mostrar dados em um mapa. O ellipsoid WGS84 é utilizado como padrão.
 
 ## Funcionalidades
 A aplicação possui as páginas principais:
@@ -13,49 +13,119 @@ A aplicação possui as páginas principais:
 6. **Conversão de Coordenadas Geocentricas X,Y,Z para plano local ENU**: Converte coordenadas geocêntricas cartesianas (XYZ) para plano local ENU (XYZ) e azimute, elevação e distância, e também para geodésicas .
 6. **Conversão de Coordenadas Geocentricas X,Y,Z para plano local ENU**:  Realiza cálculos de velocidade, aceleração e bandas passantes para azimute elevação e distância de trajetórias nominais cartesianas  sem ruído em referenciais locais ENU (East-North-Up). Ao carregar o arquivo CSV com a trajetória e configurar parâmetros do usuário obten-se os resultados de forma interativa com gráficos e tabelas .
 
+O APP permite carregar apenas para a seção atual uma tabela de sensores próprios do usuário ou incluir individualmente, os dados de localização só são gravados em arquivo (data/confLocalWGS84.csv) se o usuário optar po isso apertando o respectivo botão.
 
-## Instalação
-Siga os passos abaixo para instalar e configurar o ambiente de desenvolvimento:
+## Pré-requisitos  
 
-```bash
-# Clone o repositório
-git clone https://github.com/francisvalguedes/coordConverter.git
+### Windows  
+1. Instale o Python (>= 3.8) através do [site oficial do Python](https://www.python.org/).  
+2. Certifique-se de que o **pip** está instalado. Você pode verificar usando:  
+   ```bash  
+   python -m ensurepip  
+   python -m pip install --upgrade pip  
+   ```  
 
-# Navegue até o diretório do projeto
-cd coordConverter
+### Linux (Debian/Ubuntu)  
+1. Atualize os pacotes do sistema e instale o Python caso não tenha instalado:  
+   ```bash  
+   sudo apt update && sudo apt upgrade -y  
+   sudo apt install python3 python3-pip -y  
+   ```  
 
-# Crie um ambiente virtual
-python -m venv env
+---
 
-# Ative o ambiente virtual
-# No Windows
-env\Scripts\activate
-# No macOS/Linux
-source env/bin/activate
+## Instalação  
 
-# Instale as dependências
-pip install -r requirements.txt
+1. Clone este repositório:  
+   
+```bash  
+   git clone https://github.com/francisvalguedes/trajectory-coordinate-converter.git  
+   cd trajectory-coordinate-converter  
+```  
 
-# execute
-streamlit run source/main.py
+2. Crie e ative um ambiente virtual:  
+   - No Windows:  
+     
+```bash  
+     python -m venv env  
+     env\Scripts\activate
+     pip install --upgrade pip
+```  
+   - No Linux:  
+```bash  
+     pip install virtualenv
+     virtualenv env     
+     source env/bin/activate 
+     pip install --upgrade pip
+```  
 
+
+3. Instale as dependências do projeto:  
+
+```bash  
+   pip install -r requirements.txt  
+```  
+
+Alternativamente no Debian/Ubuntu pode instalar com o script de instalaçã
+
+```bash 
+    ./install_debian.sh
 ```
 
-## Uso
-Para iniciar a aplicação, execute o seguinte comando:
+---
 
+## Execução  
+
+1. Navegue até o diretório do projeto (se ainda não estiver).  
+2. Execute o aplicativo:  
+   
+```bash  
+   streamlit run source/main.py  
+```  
+3. Abra o navegador no endereço fornecido pelo terminal (geralmente `http://localhost:8501`).  
+
+4. Em caso de instalação em servidor linux opcionalmente pode ser agendada a inicialização do Crontab com a execução do arquivo run.sh que cria também um log de eventos do aplicativo:
 ```bash
-streamlit run app.py
+   ./run.sh
 ```
+
+---
+
+## Estrutura do Projeto  
+```
+.
+├── source/  
+│   ├── main.py  
+│   ├── pages/  
+|   |   └── 01_Grau_GMS_-_Grau_Decimal.py 
+|   |   └── 02_Geodésicas_-_ECEF, ENU,_AZ.EL.D.py 
+|   |   └── 03_ENU,_AZ.EL.D_-_ECEF,_Geodésicas.py 
+|   |   └── 04_ENU¹,_AZ.EL.D¹_-_ENU²,_AZ.EL.D.².py 
+|   |   └── 05_ECEF_-_Geodésicas,_ENU,_AZ.EL.D..py 
+│   │   └── 06_Velocidade,_Aceleração.py  
+├── lib/  
+│   ├── constants.py  
+│   └── pgFunctions.py  
+├── data/  
+│   └── confLocalWGS84.csv  
+├── requirements.txt  
+└── README.md  
+```  
 
 ## Bibliotecas Utilizadas
 1. pandas - BSD-3-Clause
 2. numpy - BSD-3-Clause
 3. streamlit - Apache 2.0
 4. pymap3d - BSD-2-Clause
+5. Geopandas: BSD 3-Clause License
+6. Plotly: MIT License
 
 ## Contribuição
 Contribuições são bem-vindas! Sinta-se à vontade para abrir issues e pull requests.
 
 ## Licença
-Este projeto está licenciado sob a Licença MIT. Veja o arquivo LICENSE para mais detalhes.
+Este projeto está licenciado sob a **Licença MIT**. Veja o arquivo LICENSE para mais detalhes.
+
+## Autor  
+Iniciado por: **Francisval Guedes Soares**  
+Ano: 2024  
