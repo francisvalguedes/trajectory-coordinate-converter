@@ -1,7 +1,7 @@
 # trajectory-coordinate-converter
 
 ## Descrição
-O `trajectory-coordinate-converter` é uma aplicação web desenvolvida com Streamlit que permite a conversão de coordenadas a partir de arquivos CSV ou manualmente. A aplicação utiliza as bibliotecas `pandas`, `numpy`, `pymap3d`, `plotly`  e `Folium` para realizar as conversões necessárias e mostrar dados em um mapa. O ellipsoid WGS84 é utilizado como padrão.
+O `trajectory-coordinate-converter` é uma aplicação web multiplataforma desenvolvida com Streamlit que permite a conversão de coordenadas a partir de arquivos CSV ou manualmente. A aplicação utiliza as bibliotecas `pandas`, `numpy`, `pymap3d`, `plotly`  e `Folium` para realizar as conversões necessárias e mostrar dados em um mapa. O ellipsoid WGS84 é utilizado como padrão.
 
 ## Funcionalidades
 A aplicação possui as páginas principais:
@@ -89,6 +89,18 @@ Alternativamente no Debian/Ubuntu pode instalar com o script de instalaçã
    ./run.sh
 ```
 
+## Configuração local
+
+Parar de observar as mudanças de um determinado arquivo:
+
+```bash
+git update-index --assume-unchanged data\confLocalWGS84.csv
+```
+E para voltar a "obervar", basta fazer isso:
+
+```bash
+git update-index --no-assume-unchanged data\confLocalWGS84.csv
+```
 ---
 
 ## Estrutura do Projeto  
@@ -105,11 +117,18 @@ Alternativamente no Debian/Ubuntu pode instalar com o script de instalaçã
 │   │   └── 06_Velocidade,_Aceleração.py  
 ├── lib/  
 │   ├── constants.py  
-│   └── pgFunctions.py  
+│   └── pgFunctions.py 
+│   └── mapFunctions.py 
 ├── data/  
-│   └── confLocalWGS84.csv  
+│   └── confLocalWGS84.csv 
+│   └── ...exemplos.csv 
+├── config/  
+│   └── map_tilelayer.json 
 ├── requirements.txt  
-└── README.md  
+├── LICENSE
+├── install_debian.sh
+├── run.sh 
+└── README.md 
 ```  
 
 ## Bibliotecas Utilizadas
