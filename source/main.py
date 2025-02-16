@@ -12,7 +12,7 @@ def main():
          visualization and data download. """  
 
     st.set_page_config(
-    page_title="Conversão de coordenadas",
+    page_title="Conversão de Coordenadas",
     page_icon="🌏", # "🤖",  # "🧊",
     # https://raw.githubusercontent.com/omnidan/node-emoji/master/lib/emoji.json
     layout="wide",
@@ -24,17 +24,17 @@ def main():
     # }
     )     
 
-    st.title("Conversão de coordenadas")
-    st.subheader('**Conversão de coordenadas**')
-    st.markdown('Conversão de coordenadas')
-    st.markdown('by: Francisval Guedes Soares, Email: francisvalg@gmail.com')
+    st.title("Conversão de Coordenadas")
+    st.subheader('**Conversão de coordenadas de trajetórias espaciais entre sistemas de referência terestres**')
+
+    st.markdown('Iniciado por: Francisval Guedes Soares, Email: francisvalg@gmail.com')
     
     url = "https://github.com/francisvalguedes/trajectory-coordinate-converter.git"
     st.markdown("Repositório: [github.com/francisvalguedes/trajectory-coordinate-converter](%s)" % url)
 
     ## Descrição                
     st.markdown("""
-    Aplicação web desenvolvida com Streamlit que permite a conversão de coordenadas entre alguns sistemas de referência, considera o elipsoide WGS84. Admite entrada manual de um ponto ou a partir de arquivo CSV contendo, por exemplo, uma trajetória com milhares de pontos. A aplicação utiliza as bibliotecas `pandas`, `numpy`, `plotly` e `pymap3d` para realizar as conversões necessárias e a biblioteca `Folium` para mostrar os dados no mapa.
+    Aplicação web desenvolvida com Streamlit que permite a conversão de coordenadas entre alguns sistemas de referência, considera o elipsoide WGS84. Admite entrada manual de um ponto ou a partir de arquivo CSV contendo, por exemplo, uma trajetória com milhares de pontos. A aplicação utiliza as bibliotecas `pandas`, `numpy` e `pymap3d` para realizar as conversões necessárias e a biblioteca `Folium` e  `plotly` para mostrar os dados no mapa e em gráficos.
 
     Escolha a página desejada na barra lateral:
                 
@@ -49,7 +49,7 @@ def main():
     5. **Conversão de Coordenadas Geocentricas X,Y,Z para plano local ENU**: Converte coordenadas geocêntricas cartesianas (XYZ) para plano local ENU (XYZ) e azimute, elevação e distância, e também para geodésicas .
     6. **Velocidade e Aceleração de Trajetória ENU**:  Realiza cálculos de velocidade, aceleração e bandas passantes (para azimute elevação e distância) a partir de trajetórias nominais cartesianas sem ruído em referenciais locais ENU (East-North-Up). Ao carregar o arquivo CSV com a trajetória e configurar parâmetros do usuário obten-se os resultados de forma interativa com gráficos e tabelas .
     
-    Abaixo a figura representa os sistemas de referência envolvidos no elipsoid WGS84.       
+    Abaixo a figura representa os sistemas de referência envolvidos no elipsoide WGS84.       
     """)
 
     st.image("figure/fig_ecef.png", caption="Sistemas de referência envolvidos")
