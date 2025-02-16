@@ -29,12 +29,12 @@ def main():
     st.markdown('Conversão de coordenadas')
     st.markdown('by: Francisval Guedes Soares, Email: francisvalg@gmail.com')
     
-    url = "https://github.com/francisvalguedes/coordConverter.git"
-    st.markdown("Repositório: [github.com/francisvalguedes/coordConverter](%s)" % url)
+    url = "https://github.com/francisvalguedes/trajectory-coordinate-converter.git"
+    st.markdown("Repositório: [github.com/francisvalguedes/trajectory-coordinate-converter](%s)" % url)
 
     ## Descrição                
     st.markdown("""
-    Aplicação web desenvolvida com Streamlit que permite a conversão de coordenadas entre diversos sistemas de referência, considera o elipsoide WGS84, admite entrada manual ou a partir de arquivo CSV. A aplicação utiliza as bibliotecas `pandas`, `numpy` e `pymap3d` para realizar as conversões necessárias e a biblioteca `Folium` para mostrar os dados no mapa.
+    Aplicação web desenvolvida com Streamlit que permite a conversão de coordenadas entre alguns sistemas de referência, considera o elipsoide WGS84. Admite entrada manual de um ponto ou a partir de arquivo CSV contendo, por exemplo, uma trajetória com milhares de pontos. A aplicação utiliza as bibliotecas `pandas`, `numpy`, `plotly` e `pymap3d` para realizar as conversões necessárias e a biblioteca `Folium` para mostrar os dados no mapa.
 
     Escolha a página desejada na barra lateral:
                 
@@ -52,7 +52,6 @@ def main():
     Abaixo a figura representa os sistemas de referência envolvidos no elipsoid WGS84.       
     """)
 
-    st.image("figure/Sistema-Geodesico-Local.jpg", caption="Sistemas de referência envolvidos")
     st.image("figure/fig_ecef.png", caption="Sistemas de referência envolvidos")
 
     st.markdown('Novos pontos de referências podem ser cadastrados na barra lateral')
