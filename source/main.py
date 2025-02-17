@@ -47,7 +47,7 @@ def main():
     3. **Conversão de Coordenadas Plano Local ENU (XYZ) ou Azimute, Elevação e Distância em ECEF e Geodésicas**: Converte coordenadas de plano local ENU (XYZ) ou azimute, elevação e distância para ECEF e coordenadas geodésicas (latitude, longitude e altitude).
     4. **Conversão de Coordenadas Plano Local de referência ENU para outro plano local ENU**: Converte coordenadas de plano local ENU (XYZ) ou azimute, elevação e distância para outro plano local ENU (XYZ) e azimute, elevação e distância, e também para ECEF e coordenadas geodésicas .
     5. **Conversão de Coordenadas Geocentricas X,Y,Z para plano local ENU**: Converte coordenadas geocêntricas cartesianas (XYZ) para plano local ENU (XYZ) e azimute, elevação e distância, e também para geodésicas .
-    6. **Velocidade e Aceleração de Trajetória ENU**:  Realiza cálculos de velocidade, aceleração e bandas passantes (para azimute elevação e distância) a partir de trajetórias nominais cartesianas sem ruído em referenciais locais ENU (East-North-Up). Ao carregar o arquivo CSV com a trajetória e configurar parâmetros do usuário obtêm-se os resultados de forma interativa com gráficos e tabelas .
+    6. **Velocidade e Aceleração de Trajetória ENU**:  Realiza cálculos de velocidade e aceleração em coordenadas polares e cartesianas.
     
     Abaixo a figura representa os sistemas de referência envolvidos no elipsoide WGS84.       
     """)

@@ -44,7 +44,7 @@ def main():
         #### Arquivo a ser carregado:
         1. O arquivo CSV deve conter obrigatoriamente as colunas 'ECEF_X', 'ECEF_Y' e 'ECEF_Z'.
         2. As colunas devem estar no formato decimal (float ou int).
-        3. A coluna 'color' (ex: pink) é opcionais para plotagem no mapa. 
+        3. As colunas 'name' e 'color' (ex: pink) são opcionais para plotagem no mapa.
         5. Exemplo de formato do arquivo CSV (você pode baixa-lo clicando no icone no canto direito superior da tabela):
         """)
         ex3 = read_csv_index('data/p5_exemplo.csv')

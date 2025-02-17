@@ -46,7 +46,7 @@ def main():
         1. O arquivo CSV deve conter as obrigatoriamente as colunas 'lat', 'lon' e height.
         2. As coordenadas 'lat' e 'lon' devem estar no formato decimal (float ou int).
         3. A coordenada height devem se decimal ou inteiro (float ou int).
-        4. A coluna 'color' (ex: pink) é opcionais para plotagem no mapa.        
+        4. As colunas 'name' e 'color' (ex: pink) são opcionais para plotagem no mapa.        
         5. Exemplo de formato do arquivo CSV (você pode baixa-lo clicando no icone no canto direito superior da tabela):
         """)
         ex1 = read_csv_index('data/p11_exemplo.csv')

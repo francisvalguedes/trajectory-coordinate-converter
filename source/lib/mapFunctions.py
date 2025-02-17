@@ -75,7 +75,7 @@ def create_map2(df, gdf_imp= gpd.GeoDataFrame()):
         st.warning("Falha JSON.", icon=cn.WARNING)
         layer_config = []
 
-    mapa = folium.Map(location=[df['lat'].mean(), df['lon'].mean()], zoom_start=8)
+    mapa = folium.Map(location=[df['lat'].mean(), df['lon'].mean()], zoom_start=6)
     # https://leaflet-extras.github.io/leaflet-providers/preview/
     # https://maps.stamen.com/terrain/#10/-5.92375/-35.16127
     

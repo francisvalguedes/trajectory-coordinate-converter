@@ -238,11 +238,11 @@ def main():
 
 # cabeçalho
     st.title("Cálculo de Velocidade, Aceleração e Bandas")
-    st.markdown("Realiza cálculos de velocidade, aceleração e bandas passantes no referencial do sensor"
-                " (para azimute elevação e distância) a partir de trajetórias nominais cartesianas sem ruído"
-                " em referenciais locais ENU (East-North-Up). Ao carregar o arquivo CSV com a trajetória e"
-                " configurar parâmetros do usuário efetua a conversão para o referencial do sensor, calcula e"
-                " apresenta resultados de forma interativa com gráficos e tabelas ")
+    st.markdown("Suposição: dados dois referenciais ENU (East-North-Up), um posicionado em uma rampa de onde decola um veículo e outro"
+                " referencial em um sensor que mede a evolução da posição desse veículo. Nessas condições essa página cálcula a velocidade,"
+                " aceleração e bandas passantes no referencial do sensor a partir de trajetórias nominais cartesianas sem ruído no referencial da rampa."
+                " Ao carregar o arquivo com a trajetória e configurar parâmetros do usuário o sistema efetua a conversão para o referencial do sensor,"
+                " calcula a primeira e segunda derivadas e apresenta resultados de forma interativa com gráficos e tabelas")
     st.subheader('**Entrada de Configurações**')
     
     # st.markdown('Cálculo de Bandas passante para controle de servo')
