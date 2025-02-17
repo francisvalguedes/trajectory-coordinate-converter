@@ -23,40 +23,20 @@ cn = ConstantsNamespace()
 
 def ler_verifica_csv(caminho_arquivo):
     try:
-        df = pd.read_csv(caminho_arquivo, header=0)  # Lê o CSV considerando a primeira linha como cabeçalho
+        # Lê o CSV ignorando a primeira linha (cabeçalho)
+        df = pd.read_csv(caminho_arquivo,skiprows=[0], header=None)
 
-        # Condição 1: Ter colunas exatamente 'x', 'y' e 'z'
-        colunas_requeridas = {"x", "y", "z"}
-        if set(df.columns) == colunas_requeridas:
+        # Verifica se o CSV tem exatamente 3 colunas
+        if df.shape[1] == 3:
+            df.columns = ["x", "y", "z"]  # Renomeia as colunas para x, y, z
+            st.success(f"Arquivo {caminho_arquivo.name} aceito", icon=cn.SUCCESS)
             return df
-        
-        # Condição 2: Ter 3 colunas com cabeçalhos específicos
-        if len(df.columns) == 3:
-            try:
-                num_linhas = len(df.index)-1
-                cabecalho = list(df.columns)  # Pegamos os nomes das colunas
-                
-                # A primeira coluna deve ser o número total de linhas (convertido para string)
-                primeira_condicao = str(num_linhas) == str(cabecalho[0])
-                
-                # A segunda coluna pode ser qualquer número (checamos se é um número)
-                segunda_condicao = cabecalho[1].isdigit()
-                
-                # A terceira coluna deve ser exatamente "1"
-                terceira_condicao = cabecalho[2] == "1"
-
-                if primeira_condicao and segunda_condicao and terceira_condicao:
-                    return df
-            except Exception as e:
-                st.error(f"Erro ao verificar arquivo: {e}", icon=cn.ERROR)
-                st.stop()
-
-        st.error("Arquivo não tem as colunas necessárias", icon=cn.ERROR)
-        st.stop()
-
+        else:
+            st.error(f"Esperado 3 colunas, mas encontrou {df.shape[1]} em {caminho_arquivo.name}.", icon=cn.ERROR)
+            return pd.DataFrame()
     except Exception as e:
-        st.error(f"Erro ao verificar arquivo: {e}", icon=cn.ERROR)
-        st.stop()
+        st.error(f"Erro ao processar o arquivo: {e}", icon=cn.ERROR)
+        return pd.DataFrame()
 
 
 def enu1_to_enu2(enu_rampa, ref_rampa, ref_sensor):
@@ -274,8 +254,8 @@ def main():
     sensor_registration()
 
 # verifica se foi escolhido o sensor
-    st.session_state.rampa = st.selectbox("Escolha o ponto de referência de origem - Rampa (ENU¹)",st.session_state.lc_df['name'].tolist(),)
-    st.session_state.sensor = st.selectbox("Escolha o ponto de referência de destino - sensor (ENU²)",st.session_state.lc_df['name'].tolist(), index=1)    
+    st.session_state.rampa = st.selectbox("Escolha o ponto de referência de origem - Rampa (ENU¹)",st.session_state.lc_df['name'].tolist())
+    st.session_state.sensor = st.selectbox("Escolha o ponto de referência de destino - sensor (ENU²)",st.session_state.lc_df['name'].tolist())    
    
     # Entrada numérica para erro angular em miliradianos
     erro_angular = st.number_input('Erro Angular (miliradianos)', min_value=0.0, max_value=100.0, value=10.0, step=0.1)
@@ -294,70 +274,81 @@ def main():
 # carregar arquivo de pontos a serem convertidos
     st.markdown("""
     #### Arquivo a ser carregado:
-    1. O arquivo de texto deve conter apenas 3 colunas 'x', 'y', 'z' no referencial plano local ENU (x-east, y-north, z-up) da rampa.
+    1. O arquivo de texto deve conter apenas 3 colunas 'x', 'y', 'z' no referencial plano local ENU (x-east, y-north, z-up) da rampa em m.
     2. O tempo de amostragem dos dados deve ser escolhido acima.
     3. Se o dado de entrada tiver passado por interpolação linear a aceleração máxima e as bandas ficarão erradas.
-    4. Exemplo de formato do arquivo CSV (você pode baixa-lo clicando no icone no canto direito superior da tabela):
+    4. Exemplo de formato do arquivo (você pode baixa-lo clicando no icone no canto direito superior da tabela):
                 """)
 
     ex6 = read_csv_index('data/p6_exemplo.csv')
-    st.dataframe( ex6.style.format(thousands=""))
+    exp_ex6 = st.expander("Exemplo de arquivo a ser carregado", expanded=True)
+    exp_ex6.dataframe( ex6.style.format(thousands=""))
 
-    uploaded_files = st.file_uploader("Escolha um ou mais arquivos CSV - no referencial da rampa (x, y, z)", accept_multiple_files=True)
-    if uploaded_files is not None:
-        # st.session_state.trajet = []
-        file_names = []
+
+    # Inicializa o estado da sessão para armazenar arquivos únicos por nome
+    if "file_dict" not in st.session_state:
+        st.session_state.file_dict = {}  # Dicionário {nome: dataframe}
+
+    # Upload de múltiplos arquivos
+    uploaded_files = st.file_uploader("Escolha um ou mais arquivos:", 
+        accept_multiple_files=True)
+
+    if uploaded_files:
         for uploaded_file in uploaded_files:
-            # file_details = {"Filename":uploaded_file.name,"FileType":uploaded_file.type,"FileSize":uploaded_file.size}
-            # st.write(file_details)
-            file_names.append(uploaded_file.name)        
-            # st.session_state.trajet.append(read_csv_index(uploaded_file))
- 
-        # Criar um selectbox para selecionar o arquivo a ser analisado
-        # st.write(file_names)
-        selected_file = st.selectbox("Selecione um arquivo para analisar", file_names)
-        
-        # Encontrar o arquivo selecionado no arquivo carregado
-        for uploaded_file in uploaded_files:            
-            if uploaded_file.name == selected_file:
-                # Ler o arquivo como DataFrame
-                # df_enu_rampa = pd.read_csv(uploaded_file )
-                # df_enu_rampa = pd.read_csv(uploaded_file,
-                #                 index_col=False ,
-                #                 skip_blank_lines=True ,
-                #                 skiprows=[0],
-                #                 header=None ,
-                #                 names=['x', 'y', 'z'])
+            file_name = uploaded_file.name  # Obtém o nome do arquivo
+
+            # Verifica se o nome do arquivo já foi carregado
+            if file_name not in st.session_state.file_dict:
+                #df = pd.read_csv(uploaded_file)
+                df = ler_verifica_csv(uploaded_file)
+                if len(df.index)>0:
+                    st.session_state.file_dict[file_name] = df
+
+
+    # Lista de arquivos carregados para exibir no selectbox
+    file_names = list(st.session_state.file_dict.keys())
+
+    if file_names:
+        selected_file = st.selectbox("Selecione um arquivo:", file_names)
+
+        # Exibir conteúdo do arquivo selecionado
+        if selected_file:
+            # st.write(f"Exibindo: **{selected_file}**")
+
+            exp_loaded = st.expander("Arquivo carregado:", expanded=True)
+            exp_loaded.dataframe(st.session_state.file_dict[selected_file])
+
+            df_enu_rampa = st.session_state.file_dict[selected_file]
                 
-                df_enu_rampa = ler_verifica_csv(uploaded_file)
+            if len(df_enu_rampa.index)>2000 or tempo_amostra < 1:
+                st.warning('Se a amostragem tiver sido aumentada com interpolação linear o calculo fica comprometido', icon=cn.WARNING)
+            st.write(f"Analisando o arquivo: {selected_file}, no referencial da rampa")
+            # st.write(df_enu_rampa)
+            reframpa = st.session_state.lc_df[st.session_state.lc_df['name'] == st.session_state.rampa].to_dict('records')[0]
+            refsensor = st.session_state.lc_df[st.session_state.lc_df['name'] == st.session_state.sensor].to_dict('records')[0]
+            if st.session_state.rampa == st.session_state.sensor:
+                st.warning("sensor e rampa são o mesmo sistema de referência", icon=cn.WARNING)
+                df_enu_sensor = enu1_to_enu2(df_enu_rampa.to_numpy(), reframpa, refsensor)
+            else:
+                df_enu_sensor = enu1_to_enu2(df_enu_rampa.to_numpy(), reframpa, refsensor)
+            # st.write(df_enu_sensor)
+            st.subheader('**Resultados:**')
+            
+            result_df = calculate_velocity_acceleration(df_enu_sensor, tempo_amostra, erro_angular, erro_distancia)
+            st.dataframe(result_df)
 
-                if len(df_enu_rampa.index)>2000 or tempo_amostra < 1:
-                    st.warning('Se a amostragem tiver sido aumentada com interpolação linear o calculo fica comprometido', icon=cn.WARNING)
-                st.write(f"Analisando o arquivo: {selected_file}, no referencial da rampa")
-                # st.write(df_enu_rampa)
-                reframpa = st.session_state.lc_df[st.session_state.lc_df['name'] == st.session_state.rampa].to_dict('records')[0]
-                refsensor = st.session_state.lc_df[st.session_state.lc_df['name'] == st.session_state.sensor].to_dict('records')[0]
-                if st.session_state.rampa == st.session_state.sensor:
-                    st.warning("sensor e rampa são o mesmo sistema de referência", icon=cn.WARNING)
-                    df_enu_sensor = enu1_to_enu2(df_enu_rampa.to_numpy(), reframpa, refsensor)
-                else:
-                    df_enu_sensor = enu1_to_enu2(df_enu_rampa.to_numpy(), reframpa, refsensor)
-                # st.write(df_enu_sensor)
-                st.subheader('**Resultados:**')
-                
-                result_df = calculate_velocity_acceleration(df_enu_sensor, tempo_amostra, erro_angular, erro_distancia)
-                st.dataframe(result_df)
+            result_df = result_df.iloc[3:-3] # ignora descontinuidade inicial e final
 
-                display_max_bands(result_df)
+            display_max_bands(result_df)
 
-                st.subheader('**Gráficos:**')
-                plot_seq = [ 'X(m)', 'Y(m)', 'Z(m)', 'VX(m/s)', 'VY(m/s)', 'VZ(m/s)', 'AX(m/s²)', 'AY(m/s²)', 'AZ(m/s²)']
-                plot_streamlit_plotly(result_df, plot_seq, titulo='Gráfico de coordenadas cartesianas ENU sensor')
-                plot_seq = ['Az(rad)', 'El(rad)', 'd(m)','Vaz(rad/s)', 'Vel(rad/s)', 'Vr(m/s)', 'Aaz(rad/s²)', 'Ael(rad/s²)', 'Ar(m/s²)']
-                plot_streamlit_plotly(result_df, plot_seq, titulo='Gráfico de coordenadas polares do sensor')
-                plot_seq = ['BandaAq_Az(mrad/s²)','BandaAq_El(mrad/s²)','BandaAq_d(m/s²)',
-                            'Banda_Az(mrad/s²)','Banda_El(mrad/s²)', 'Banda_d(m/s²)']
-                plot_streamlit_plotly(result_df, plot_seq, titulo='Gráfico de Bandas de aquisição e de regime para o referencial do sensor')
+            st.subheader('**Gráficos:**')
+            plot_seq = [ 'X(m)', 'Y(m)', 'Z(m)', 'VX(m/s)', 'VY(m/s)', 'VZ(m/s)', 'AX(m/s²)', 'AY(m/s²)', 'AZ(m/s²)']
+            plot_streamlit_plotly(result_df, plot_seq, titulo='Gráfico de coordenadas cartesianas ENU sensor')
+            plot_seq = ['Az(rad)', 'El(rad)', 'd(m)','Vaz(rad/s)', 'Vel(rad/s)', 'Vr(m/s)', 'Aaz(rad/s²)', 'Ael(rad/s²)', 'Ar(m/s²)']
+            plot_streamlit_plotly(result_df, plot_seq, titulo='Gráfico de coordenadas polares do sensor')
+            plot_seq = ['BandaAq_Az(mrad/s²)','BandaAq_El(mrad/s²)','BandaAq_d(m/s²)',
+                        'Banda_Az(mrad/s²)','Banda_El(mrad/s²)', 'Banda_d(m/s²)']
+            plot_streamlit_plotly(result_df, plot_seq, titulo='Bandas de aquisição/regime referencial do sensor')
 
 
 
