@@ -8,6 +8,7 @@ from lib.constants import  ConstantsNamespace
 
 cn = ConstantsNamespace()
 
+@st.cache_data
 def read_csv_index(file_path):
     # Lê o CSV sem atribuição de índice e apaga linhas vazias
     df = pd.read_csv(file_path).dropna(how='all')

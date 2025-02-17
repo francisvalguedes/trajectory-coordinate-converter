@@ -81,8 +81,11 @@ def main():
         col1.markdown('Exemplo para converter de gms para decimal')
         col2.markdown('Exemplo para converter de decimal para gms')
 
-        col1.dataframe( pd.read_csv('data/graus_ex.csv').style.format(thousands=""))
-        col2.dataframe( pd.read_csv('data/ex_pos_dd.csv').style.format(thousands=""))
+        ex1 = read_csv_index('data/p12_exemplo.csv')
+        ex2 = read_csv_index('data/p11_exemplo.csv')
+
+        col1.dataframe( ex1.style.format(thousands=""))
+        col2.dataframe( ex2.style.format(thousands=""))
 
         # Carregar arquivo CSV
         uploaded_file = st.file_uploader("Escolha um arquivo CSV", type="csv")

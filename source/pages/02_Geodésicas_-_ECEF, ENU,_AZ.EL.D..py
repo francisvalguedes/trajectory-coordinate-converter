@@ -47,9 +47,11 @@ def main():
         2. As coordenadas 'lat' e 'lon' devem estar no formato decimal (float ou int).
         3. A coordenada height devem se decimal ou inteiro (float ou int).
         4. A coluna 'color' (ex: pink) é opcionais para plotagem no mapa.        
-        5. Exemplo de formato do arquivo CSV (você pode baixalo clicando no icone no canto direito superior da tabela):
+        5. Exemplo de formato do arquivo CSV (você pode baixa-lo clicando no icone no canto direito superior da tabela):
         """)
-        st.dataframe( pd.read_csv('data/Geodeticas_ex.csv').dropna(how='all').style.format(thousands=""))
+        ex1 = read_csv_index('data/p11_exemplo.csv')
+
+        st.dataframe( ex1.style.format(thousands=""))
 
         data_elements = st.file_uploader("Carregue o arquivo que deseja converter - csv", type='csv')
         if data_elements is not None:        

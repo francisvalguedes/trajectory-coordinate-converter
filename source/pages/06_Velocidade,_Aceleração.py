@@ -21,6 +21,43 @@ from plotly.subplots import make_subplots
 cn = ConstantsNamespace()
 
 
+def ler_verifica_csv(caminho_arquivo):
+    try:
+        df = pd.read_csv(caminho_arquivo, header=0)  # Lê o CSV considerando a primeira linha como cabeçalho
+
+        # Condição 1: Ter colunas exatamente 'x', 'y' e 'z'
+        colunas_requeridas = {"x", "y", "z"}
+        if set(df.columns) == colunas_requeridas:
+            return df
+        
+        # Condição 2: Ter 3 colunas com cabeçalhos específicos
+        if len(df.columns) == 3:
+            try:
+                num_linhas = len(df.index)-1
+                cabecalho = list(df.columns)  # Pegamos os nomes das colunas
+                
+                # A primeira coluna deve ser o número total de linhas (convertido para string)
+                primeira_condicao = str(num_linhas) == str(cabecalho[0])
+                
+                # A segunda coluna pode ser qualquer número (checamos se é um número)
+                segunda_condicao = cabecalho[1].isdigit()
+                
+                # A terceira coluna deve ser exatamente "1"
+                terceira_condicao = cabecalho[2] == "1"
+
+                if primeira_condicao and segunda_condicao and terceira_condicao:
+                    return df
+            except Exception as e:
+                st.error(f"Erro ao verificar arquivo: {e}", icon=cn.ERROR)
+                st.stop()
+
+        st.error("Arquivo não tem as colunas necessárias", icon=cn.ERROR)
+        st.stop()
+
+    except Exception as e:
+        st.error(f"Erro ao verificar arquivo: {e}", icon=cn.ERROR)
+        st.stop()
+
 
 def enu1_to_enu2(enu_rampa, ref_rampa, ref_sensor):
     ell=pm.Ellipsoid.from_name('wgs84')
@@ -224,7 +261,7 @@ def main():
     st.markdown("Realiza cálculos de velocidade, aceleração e bandas passantes no referencial do sensor"
                 " (para azimute elevação e distância) a partir de trajetórias nominais cartesianas sem ruído"
                 " em referenciais locais ENU (East-North-Up). Ao carregar o arquivo CSV com a trajetória e"
-                " configurar parâmetros do usuário efetua a conversão para o referencial do sensor calcula e"
+                " configurar parâmetros do usuário efetua a conversão para o referencial do sensor, calcula e"
                 " apresenta resultados de forma interativa com gráficos e tabelas ")
     st.subheader('**Entrada de Configurações**')
     
@@ -257,10 +294,14 @@ def main():
 # carregar arquivo de pontos a serem convertidos
     st.markdown("""
     #### Arquivo a ser carregado:
-    1. O arquivo de texto deve conter as colunas 'x', 'y', 'z' no referencial plano local ENU (x-east, y-north, z-up) da rampa, a primeira linha é ignorada.
-    2. O tempo de amostragem dos dados deve ser de um segundo.
+    1. O arquivo de texto deve conter apenas 3 colunas 'x', 'y', 'z' no referencial plano local ENU (x-east, y-north, z-up) da rampa.
+    2. O tempo de amostragem dos dados deve ser escolhido acima.
     3. Se o dado de entrada tiver passado por interpolação linear a aceleração máxima e as bandas ficarão erradas.
-    """)
+    4. Exemplo de formato do arquivo CSV (você pode baixa-lo clicando no icone no canto direito superior da tabela):
+                """)
+
+    ex6 = read_csv_index('data/p6_exemplo.csv')
+    st.dataframe( ex6.style.format(thousands=""))
 
     uploaded_files = st.file_uploader("Escolha um ou mais arquivos CSV - no referencial da rampa (x, y, z)", accept_multiple_files=True)
     if uploaded_files is not None:
@@ -281,13 +322,15 @@ def main():
             if uploaded_file.name == selected_file:
                 # Ler o arquivo como DataFrame
                 # df_enu_rampa = pd.read_csv(uploaded_file )
-                df_enu_rampa = pd.read_csv(uploaded_file,
-                                index_col=False ,
-                                skip_blank_lines=True ,
-                                skiprows=[0],
-                                header=None ,
-                                names=['x', 'y', 'z'])
+                # df_enu_rampa = pd.read_csv(uploaded_file,
+                #                 index_col=False ,
+                #                 skip_blank_lines=True ,
+                #                 skiprows=[0],
+                #                 header=None ,
+                #                 names=['x', 'y', 'z'])
                 
+                df_enu_rampa = ler_verifica_csv(uploaded_file)
+
                 if len(df_enu_rampa.index)>2000 or tempo_amostra < 1:
                     st.warning('Se a amostragem tiver sido aumentada com interpolação linear o calculo fica comprometido', icon=cn.WARNING)
                 st.write(f"Analisando o arquivo: {selected_file}, no referencial da rampa")
@@ -296,7 +339,7 @@ def main():
                 refsensor = st.session_state.lc_df[st.session_state.lc_df['name'] == st.session_state.sensor].to_dict('records')[0]
                 if st.session_state.rampa == st.session_state.sensor:
                     st.warning("sensor e rampa são o mesmo sistema de referência", icon=cn.WARNING)
-                    df_enu_sensor = df_enu_rampa
+                    df_enu_sensor = enu1_to_enu2(df_enu_rampa.to_numpy(), reframpa, refsensor)
                 else:
                     df_enu_sensor = enu1_to_enu2(df_enu_rampa.to_numpy(), reframpa, refsensor)
                 # st.write(df_enu_sensor)

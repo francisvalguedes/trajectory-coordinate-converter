@@ -100,7 +100,8 @@ def main():
         3. A coluna 'color' (ex: pink) é opcionais para plotagem no mapa.
         4. Exemplo de formato do arquivo CSV (você pode baixa-lo clicando no icone no canto direito superior da tabela):
         """)
-        st.dataframe( pd.read_csv('data/enu_ex.csv').dropna(how='all').style.format(thousands=""))
+        ex3 = read_csv_index('data/p3_exemplo.csv')
+        st.dataframe( ex3.dropna(how='all').style.format(thousands=""))
 
         mkm = st.selectbox("Unidade métrica do dado de entrada", ['m', 'km'])
         radgraus = st.selectbox("Unidade angular do dado de entrada", ['graus', 'rad'])
