@@ -71,20 +71,6 @@ def verifica_resultado(df):
 
 
 def main(): 
-# configuração da página   
-    st.set_page_config(
-    page_title="ENU xyz para",
-    page_icon="🌏", # "🤖",  # "🧊",
-    # https://raw.githubusercontent.com/omnidan/node-emoji/master/lib/emoji.json
-    layout="wide",
-    initial_sidebar_state="expanded",
-    # menu_items={
-    #     'Get Help': 'https://www.sitelink.com',
-    #     'Report a bug': "https://www.sitelink.com",
-    #     'About': "# A cool app"
-    # }
-    )
-
 # cabeçalho
     st.title("Conversão de coordenadas")
     st.subheader('**Conversão a partir de coordenadas ENU**')

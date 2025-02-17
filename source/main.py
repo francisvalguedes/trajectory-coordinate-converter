@@ -17,11 +17,11 @@ def main():
     # https://raw.githubusercontent.com/omnidan/node-emoji/master/lib/emoji.json
     layout="wide",
     initial_sidebar_state="expanded",
-    # menu_items={
-    #     'Get Help': 'https://www.sitelink.com',
-    #     'Report a bug': "https://www.sitelink.com",
-    #     'About': "# A cool app"
-    # }
+    menu_items={
+        'Get Help': "https://github.com/francisvalguedes/trajectory-coordinate-converter.git",
+        'Report a bug': "https://github.com/francisvalguedes/trajectory-coordinate-converter.git",
+        'About': "# Um App para conversão de cordenadas de tragetórias espaciais"
+    }
     )     
 
     st.title("Conversão de Coordenadas")

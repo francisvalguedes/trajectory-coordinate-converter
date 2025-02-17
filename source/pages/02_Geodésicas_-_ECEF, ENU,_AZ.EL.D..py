@@ -11,7 +11,6 @@ from lib.mapFunctions import*
 cn = ConstantsNamespace()
 
 def main():
-    st.set_page_config(page_title="Geodésicas para", page_icon="🌏", layout="wide")
     st.title("Conversão de Coordenadas")
     st.subheader('**Conversão a partir de coordenadas Geodésicas WGS84**')
     st.markdown('Conversão de coordenadas Geodésicas (latitude, longitude e altitude) para coordenadas ECEF, ENU e azimute, elevação e distância em um ponto de referência')

@@ -28,13 +28,6 @@ def dd_to_dms_string(decimal_degrees):
     #return f"{sign}{degrees}°{minutes:02}'{seconds:02.6f}\""
 
 def main():
-    # Configurações da página
-    st.set_page_config(
-        page_title="Conversor Graus",
-        page_icon="🌍",
-        layout="wide",
-        initial_sidebar_state="expanded",
-    )
 
     # Título e instruções
     st.title("Conversor Graus 'DMS' (GMS - grau(degree), minuto e segundo) para decimal ou de grau decimal para 'DMS' ")

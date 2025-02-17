@@ -222,20 +222,6 @@ def plot_streamlit_plotly(df, plot_seq, titulo = 'Gráficos Interativos'):
 
 
 def main(): 
-# configuração da página   
-    # st.set_page_config(
-    # page_title="Velocidade, Aceleração e Bandas",
-    # page_icon= "🌏", # "🤖",  # "🧊",
-    # # https://raw.githubusercontent.com/omnidan/node-emoji/master/lib/emoji.json
-    # layout="wide",
-    # initial_sidebar_state="expanded",
-    # # menu_items={
-    # #     'Get Help': 'https://www.sitelink.com',
-    # #     'Report a bug': "https://www.sitelink.com",
-    # #     'About': "# A cool app"
-    # # }
-    # )
-
 # cabeçalho
     st.title("Cálculo de Velocidade, Aceleração e Bandas")
     st.markdown("Suposição: dados dois referenciais ENU (East-North-Up), um posicionado em uma rampa de onde decola um veículo e outro"

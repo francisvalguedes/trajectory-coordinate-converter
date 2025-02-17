@@ -11,7 +11,6 @@ from lib.mapFunctions import*
 cn = ConstantsNamespace()
 
 def main():
-    st.set_page_config(page_title="Geodésicas para", page_icon="🌏", layout="wide")
     st.title("Conversão de Coordenadas")
     st.subheader('**Conversão a partir de coordenadas ECEF**')
     st.markdown('Conversão de coordenadas ECEF (X, Y, Z) para coordenadas geodésicas WGS84 e outras')
