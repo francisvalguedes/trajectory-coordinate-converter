@@ -89,20 +89,6 @@ Alternativamente no Debian/Ubuntu pode instalar com o script de instalaçã
    ./run.sh
 ```
 
-## Configuração local
-
-Parar de observar as mudanças de um determinado arquivo:
-
-```bash
-git update-index --assume-unchanged data\confLocalWGS84.csv
-```
-E para voltar a "obervar", basta fazer isso:
-
-```bash
-git update-index --no-assume-unchanged data\confLocalWGS84.csv
-```
----
-
 ## Estrutura do Projeto  
 ```
 .
