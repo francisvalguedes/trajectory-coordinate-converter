@@ -11,9 +11,8 @@ A aplicação possui as páginas principais:
 4. **Conversão de Coordenadas Plano Local ENU (XYZ) ou Azimute, Elevação e Distância em ECEF e Geodésicas**: Converte coordenadas de plano local ENU (XYZ) ou azimute, elevação e distância para ECEF e coordenadas geodésicas (latitude, longitude e altitude).
 5. **Conversão de Coordenadas Plano Local de referência ENU para outro plano local ENU**: Converte coordenadas de plano local ENU (XYZ) ou azimute, elevação e distância para outro plano local ENU (XYZ) e azimute, elevação e distância, e também para ECEF e coordenadas geodésicas .
 6. **Conversão de Coordenadas Geocentricas X,Y,Z para plano local ENU**: Converte coordenadas geocêntricas cartesianas (XYZ) para plano local ENU (XYZ) e azimute, elevação e distância, e também para geodésicas .
-7. **Conversão de Coordenadas Geocentricas X,Y,Z para plano local ENU**:  Realiza cálculos de velocidade, aceleração de azimute elevação e distância de trajetórias nominais cartesianas sem ruído em referenciais locais do sensor.
+7. **Velocidade e Aceleração de Trajetória ENU**:  Realiza cálculos de velocidade e aceleração no sistema ENU x, y, z e azimute elevação e distância no referencial do sensor, a partir de trajetórias nominais cartesianas sem ruído em referenciais locais do ponto de partida do veículo.
 
-Os dados de localização do sensor para as conversões só são gravados em arquivo (data/confLocalWGS84.csv) se o usuário optar por isso apertando o respectivo botão na barra lateral, caso prefira o usuário pode carregar dados de localização do sensor apenas durante a sessão atual.
 
 ## Pré-requisitos  
 
