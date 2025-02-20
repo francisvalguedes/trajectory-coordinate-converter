@@ -61,7 +61,7 @@ def gpd_geojson_read(geojson_in):
             st.stop()
     return gdf_data
 
-@st.cache_data
+#@st.cache_data
 def pd_csv_read(caminho_csv):
     return pd.read_csv(caminho_csv).dropna(how='all')
 
@@ -120,7 +120,7 @@ def find_coord_geod(df):
     return df
 
 def sensor_registration():
-    # adicionar novo ponto de referência (sensor)
+    # adicionar novo ponto de referência (sensor)    
     lc_expander = st.sidebar.expander("Adicionar novo ponto de referência no WGS84", expanded=False)
     lc_name = lc_expander.text_input('Nome', "minha localização")
     latitude = lc_expander.number_input('Latitude', -90.0, 90.0, 0.0, format="%.6f")
@@ -128,6 +128,7 @@ def sensor_registration():
     height = lc_expander.number_input('Altitude (m)', -1000.0, 2000.0, 0.0, format="%.6f")
     color = lc_expander.text_input('Cor', "red")
 
+    lc_expander.write("Registre o local do ponto de referência no servidor, somente o administrador poderá apagar e ficará disponível para outros usuários:")
     if lc_expander.button("Registrar definitivamente"):
         lc_add = {'name': [lc_name], 'lat': [latitude], 'lon': [longitude], 'height': [height], 'color': [color]}
         if lc_name not in st.session_state.lc_df['name'].to_list():
@@ -140,6 +141,7 @@ def sensor_registration():
         else:
             lc_expander.write('Localização já existe')
 
+    lc_expander.write("Registre o local do ponto de referência apenas para a sessão atual - não será gravado:")
     if lc_expander.button("Apenas para esta conversão"):
         lc_add = {'name': [lc_name], 'lat': [latitude], 'lon': [longitude], 'height': [height], 'color': [color]}
         if lc_name not in st.session_state.lc_df['name'].to_list():
@@ -149,10 +151,8 @@ def sensor_registration():
                 lc_expander.write('Escreva um nome sem caracteres especiais')
         else:
             lc_expander.write('Localização já existe')
-    
-    
     # Carregar arquivo CSV
-    lc_expander.write("Alternativamente pode ser carregado um arquivo csv com pontos de referência apenas para esta sessão ( name, color, lat, lon height)")
+    lc_expander.write("Alternativamente pode ser carregado um arquivo csv com pontos de referência apenas para sessão atual ( name, color, lat, lon height)")
     uploaded_file = lc_expander.file_uploader("Pontos em um CSV para esta conversão", type="csv")
     if uploaded_file is not None:
         if uploaded_file.type == "text/csv":
