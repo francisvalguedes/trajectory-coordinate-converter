@@ -67,7 +67,7 @@ def enu1_to_enu2(enu_rampa, ref_rampa, ref_sensor):
     return pd.DataFrame(enu_sensor, columns=['x', 'y', 'z', 'Az', 'El', 'd'])
 
 
-def calculate_velocity_acceleration(df, sampling_time, erro_angular_mrd, erro_d_m ):
+def calculate_velocity_acceleration(df, sampling_time ):
     """
     Calcula a velocidade e aceleração para cada eixo e para as variáveis angulares (Az, El, r),
     e adiciona o tempo relativo ao primeiro ponto.
@@ -106,13 +106,6 @@ def calculate_velocity_acceleration(df, sampling_time, erro_angular_mrd, erro_d_
     acceleration_el = np.gradient(velocity_el, sampling_time)  # Aceleração angular Elevação
     acceleration_r = np.gradient(velocity_r, sampling_time)    # Aceleração radial
 
-    band_az = np.sqrt(1000*np.abs(acceleration_az/erro_angular_mrd))
-    band_el = np.sqrt(1000*np.abs(acceleration_el/erro_angular_mrd))
-    band_d = np.sqrt(np.abs(acceleration_r/erro_d_m))
-
-    band_aq_az = np.sqrt(1000*np.abs(velocity_az/erro_angular_mrd)) # az
-    band_aq_el = np.sqrt(1000*np.abs(velocity_el/erro_angular_mrd)) # el
-    band_aq_d = np.sqrt(np.abs(velocity_r/erro_d_m)) # range
 
     # Criar um vetor de tempo relativo ao primeiro ponto
     time_relative = np.arange(0, len(df) * sampling_time, sampling_time)
@@ -140,48 +133,11 @@ def calculate_velocity_acceleration(df, sampling_time, erro_angular_mrd, erro_d_
         'Vr(m/s)': velocity_r,
         'Aaz(rad/s²)': acceleration_az,
         'Ael(rad/s²)': acceleration_el,
-        'Ar(m/s²)': acceleration_r,
-        'BandaAq_Az(mrad/s²)': band_aq_az,
-        'BandaAq_El(mrad/s²)': band_aq_el,
-        'BandaAq_d(m/s²)': band_aq_d,
-        'Banda_Az(mrad/s²)': band_az,
-        'Banda_El(mrad/s²)': band_el,
-        'Banda_d(m/s²)': band_d     
+        'Ar(m/s²)': acceleration_r
+   
     })   
 
     return result_df
-
-import streamlit as st
-
-import streamlit as st
-
-def display_max_bands(result_df):
-    """
-    Exibe os valores máximos das bandas calculadas no DataFrame na interface Streamlit.
-
-    Args:
-        result_df (pd.DataFrame): DataFrame contendo as colunas das bandas calculadas.
-    """
-    # Calcular os valores máximos de cada banda
-    max_band_aq_az = result_df['BandaAq_Az(mrad/s²)'].max()
-    max_band_aq_el = result_df['BandaAq_El(mrad/s²)'].max()
-    max_band_aq_d = result_df['BandaAq_d(m/s²)'].max()
-
-    max_band_az = result_df['Banda_Az(mrad/s²)'].max()
-    max_band_el = result_df['Banda_El(mrad/s²)'].max()
-    max_band_d = result_df['Banda_d(m/s²)'].max()
-
-    # Exibir os valores em formato compacto
-    st.write("**Máximos das Bandas Calculadas:**")
-
-    st.write(f"- **Banda máxima de Aquisição** - Az: {max_band_aq_az:.3f} mrad/s²,  "
-             f"El: {max_band_aq_el:.3f} mrad/s²,  "
-             f"d: {max_band_aq_d:.3f} m/s²")
-
-    st.write(f"- **Banda máxima de regime** - Az: {max_band_az:.3f} mrad/s²,  "
-             f"El: {max_band_el:.3f} mrad/s²,  "
-             f"d: {max_band_d:.3f} m/s²")
-
 
 def plot_streamlit_plotly(df, plot_seq, titulo = 'Gráficos Interativos'):
     """
@@ -223,15 +179,14 @@ def plot_streamlit_plotly(df, plot_seq, titulo = 'Gráficos Interativos'):
 
 def main(): 
 # cabeçalho
-    st.title("Cálculo de Velocidade, Aceleração e Bandas")
+    st.title("Cálculo de Velocidade, Aceleração")
     st.markdown("Suposição: dados dois referenciais ENU (East-North-Up), um posicionado em uma rampa, de onde decola um veículo e outro"
                 " referencial em um sensor que mede a evolução da posição desse veículo. Nessas condições essa página cálcula a velocidade,"
-                " aceleração e bandas no referencial do sensor a partir de trajetórias nominais cartesianas sem ruído no referencial da rampa."
+                " aceleração e no referencial do sensor a partir de trajetórias nominais cartesianas sem ruído no referencial da rampa."
                 " Ao carregar o arquivo com a trajetória e configurar parâmetros do usuário o sistema efetua a conversão para o referencial do sensor,"
                 " calcula a primeira e segunda derivadas e apresenta resultados de forma interativa com gráficos e tabelas")
     st.subheader('**Entrada de Configurações**')
     
-    # st.markdown('Cálculo de Bandas passante para controle de servo')
 
     if "lc_df" not in st.session_state:
         st.session_state.lc_df = pd_csv_read('data/confLocalWGS84.csv')
@@ -243,26 +198,15 @@ def main():
     st.session_state.rampa = st.selectbox("Escolha o ponto de referência de origem - Rampa (ENU¹)",st.session_state.lc_df['name'].tolist())
     st.session_state.sensor = st.selectbox("Escolha o ponto de referência de destino - sensor (ENU²)",st.session_state.lc_df['name'].tolist())    
    
-    # Entrada numérica para erro angular em miliradianos
-    erro_angular = st.number_input('Erro Angular (miliradianos)', min_value=0.0, max_value=100.0, value=10.0, step=0.1)
-
-    # Entrada numérica para erro de distância em metros
-    erro_distancia = st.number_input('Erro de Distância (metros)', min_value=0.0, max_value=1000.0, value=25.0, step=0.1)
-
     # Entrada numérica para erro de distância em metros
     tempo_amostra = st.number_input('Tempo de amostragem (s)', min_value=0.01, max_value=10.0, value=1.0, step=0.01)
-
-    # Exibir os valores inseridos
-    # st.write(f"Erro Angular: {erro_angular} miliradianos")
-    # st.write(f"Erro de Distância: {erro_distancia} metros")
-
-
+ 
 # carregar arquivo de pontos a serem convertidos
     st.markdown("""
     #### Arquivo a ser carregado:
     1. O arquivo de texto deve conter apenas 3 colunas 'x', 'y', 'z' no referencial plano local ENU (x-east, y-north, z-up) da rampa em m.
     2. O tempo de amostragem dos dados deve ser escolhido acima.
-    3. Se o dado de entrada tiver passado por interpolação linear a aceleração máxima e as bandas ficarão erradas.
+    3. Se o dado de entrada tiver passado por interpolação linear o cálculo da aceleração ficaráo errado.
     4. Exemplo de formato do arquivo (você pode baixa-lo clicando no icone no canto direito superior da tabela):
                 """)
 
@@ -320,22 +264,16 @@ def main():
             # st.write(df_enu_sensor)
             st.subheader('**Resultados:**')
             
-            result_df = calculate_velocity_acceleration(df_enu_sensor, tempo_amostra, erro_angular, erro_distancia)
+            result_df = calculate_velocity_acceleration(df_enu_sensor, tempo_amostra)
             st.dataframe(result_df)
 
             result_df = result_df.iloc[3:-3] # ignora descontinuidade inicial e final
-
-            display_max_bands(result_df)
 
             st.subheader('**Gráficos:**')
             plot_seq = [ 'X(m)', 'Y(m)', 'Z(m)', 'VX(m/s)', 'VY(m/s)', 'VZ(m/s)', 'AX(m/s²)', 'AY(m/s²)', 'AZ(m/s²)']
             plot_streamlit_plotly(result_df, plot_seq, titulo='Gráfico de coordenadas cartesianas ENU sensor')
             plot_seq = ['Az(rad)', 'El(rad)', 'd(m)','Vaz(rad/s)', 'Vel(rad/s)', 'Vr(m/s)', 'Aaz(rad/s²)', 'Ael(rad/s²)', 'Ar(m/s²)']
             plot_streamlit_plotly(result_df, plot_seq, titulo='Gráfico de coordenadas polares do sensor')
-            plot_seq = ['BandaAq_Az(mrad/s²)','BandaAq_El(mrad/s²)','BandaAq_d(m/s²)',
-                        'Banda_Az(mrad/s²)','Banda_El(mrad/s²)', 'Banda_d(m/s²)']
-            plot_streamlit_plotly(result_df, plot_seq, titulo='Bandas de aquisição/regime referencial do sensor')
-
 
 
 
