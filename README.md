@@ -15,7 +15,7 @@ A aplicação possui as páginas principais:
 
 ## Imagem dos sistemas de referência envolvidos
 
-<img src="figures/fig_ecef.png" width="600" />
+<img src="figure/fig_ecef.png" width="600" />
 
 ## Pré-requisitos  
 
