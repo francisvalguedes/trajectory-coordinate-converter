@@ -20,7 +20,7 @@ A aplicação possui as páginas principais:
 ## Pré-requisitos  
 
 ### Windows  
-1. Instale o Python (>= 3.8) através do [site oficial do Python](https://www.python.org/).  
+1. Instale o Python (>= 3.11) através do [site oficial do Python](https://www.python.org/).  
 2. Certifique-se de que o **pip** está instalado. Você pode verificar usando:  
    ```bash  
    python -m ensurepip  
