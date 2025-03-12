@@ -1,5 +1,6 @@
 # trajectory-coordinate-converter
 
+[Linkedin](https://www.linkedin.com/pulse/app-streamlit-para-convers%25C3%25A3o-de-coordenadas-espaciais-guedes-soares-3xxce)
 
 ## Descrição
 O `trajectory-coordinate-converter` é uma aplicação web multiplataforma desenvolvida com Streamlit que permite a conversão de coordenadas espaciais a partir de arquivos CSV ou manualmente. A aplicação utiliza as bibliotecas `pandas`, `numpy`, `pymap3d`, `plotly`  e `Folium` para realizar as conversões necessárias e mostrar dados em um mapa. O ellipsoid WGS84 é utilizado como padrão.
