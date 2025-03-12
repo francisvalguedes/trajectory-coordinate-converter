@@ -1,7 +1,8 @@
 # trajectory-coordinate-converter
 
+
 ## Descrição
-O `trajectory-coordinate-converter` é uma aplicação web multiplataforma desenvolvida com Streamlit que permite a conversão de coordenadas a partir de arquivos CSV ou manualmente. A aplicação utiliza as bibliotecas `pandas`, `numpy`, `pymap3d`, `plotly`  e `Folium` para realizar as conversões necessárias e mostrar dados em um mapa. O ellipsoid WGS84 é utilizado como padrão.
+O `trajectory-coordinate-converter` é uma aplicação web multiplataforma desenvolvida com Streamlit que permite a conversão de coordenadas espaciais a partir de arquivos CSV ou manualmente. A aplicação utiliza as bibliotecas `pandas`, `numpy`, `pymap3d`, `plotly`  e `Folium` para realizar as conversões necessárias e mostrar dados em um mapa. O ellipsoid WGS84 é utilizado como padrão.
 
 ## Funcionalidades
 A aplicação possui as páginas principais:
@@ -11,12 +12,11 @@ A aplicação possui as páginas principais:
 4. **Conversão de Coordenadas Plano Local ENU (XYZ) ou Azimute, Elevação e Distância em ECEF e Geodésicas**: Converte coordenadas de plano local ENU (XYZ) ou azimute, elevação e distância para ECEF e coordenadas geodésicas (latitude, longitude e altitude).
 5. **Conversão de Coordenadas Plano Local de referência ENU para outro plano local ENU**: Converte coordenadas de plano local ENU (XYZ) ou azimute, elevação e distância para outro plano local ENU (XYZ) e azimute, elevação e distância, e também para ECEF e coordenadas geodésicas .
 6. **Conversão de Coordenadas Geocentricas X,Y,Z para plano local ENU**: Converte coordenadas geocêntricas cartesianas (XYZ) para plano local ENU (XYZ) e azimute, elevação e distância, e também para geodésicas .
-7. **Velocidade e Aceleração de Trajetória ENU**:  Realiza cálculos de velocidade e aceleração no sistema ENU x, y, z e azimute elevação e distância no referencial do sensor, a partir de trajetórias nominais cartesianas sem ruído em referenciais locais do ponto de partida do veículo.
+7. **Velocidade e Aceleração de Trajetória ENU**:  Realiza cálculos de velocidade e aceleração no sistema ENU no referencial do sensor, a partir de trajetórias nominais cartesianas sem ruído em referenciais locais ENU do ponto de partida do veículo.
 
 ## Imagem dos sistemas de referência envolvidos
 
 <img src="figure/fig_ecef.png" width="600" />
-
 ## Pré-requisitos  
 
 ### Windows  
@@ -93,30 +93,38 @@ Alternativamente no Debian/Ubuntu pode instalar com o script de instalaçã
 
 ## Estrutura do Projeto  
 ```
-.
-├── source/  
-│   ├── main.py  
-│   ├── pages/  
-|   |   └── 01_Grau_GMS_-_Grau_Decimal.py 
-|   |   └── 02_Geodésicas_-_ECEF, ENU,_AZ.EL.D.py 
-|   |   └── 03_ENU,_AZ.EL.D_-_ECEF,_Geodésicas.py 
-|   |   └── 04_ENU¹,_AZ.EL.D¹_-_ENU²,_AZ.EL.D.².py 
-|   |   └── 05_ECEF_-_Geodésicas,_ENU,_AZ.EL.D..py 
-│   │   └── 06_Velocidade,_Aceleração.py  
-├── lib/  
-│   ├── constants.py  
-│   └── pgFunctions.py 
-│   └── mapFunctions.py 
-├── data/  
-│   └── confLocalWGS84.csv 
-│   └── ...exemplos.csv 
-├── config/  
-│   └── map_tilelayer.json 
-├── requirements.txt  
-├── LICENSE
-├── install_debian.sh
-├── run.sh 
-└── README.md 
+ trajectory-coordinate-converter/
+├─ config/
+│  └─ map_tilelayer.json
+├─ data/
+│  ├─ confLocalWGS84.csv
+│  ├─ p11_exemplo.csv
+│  ├─ p12_exemplo.csv
+│  ├─ p3_exemplo.csv
+│  ├─ p4_exemplo.csv
+│  ├─ p5_exemplo.csv
+│  └─ p6_exemplo.csv
+├─ figure/
+│  └─ fig_ecef.png
+├─ source/
+│  ├─ lib/
+│  │  ├─ constants.py
+│  │  ├─ mapFunctions.py
+│  │  └─ pgFunctions.py
+│  ├─ pages/
+│  │  ├─ 01_Grau_GMS_-_Grau_Decimal.py
+│  │  ├─ 02_Geodésicas_-_ECEF, ENU,_AZ.EL.D..py
+│  │  ├─ 03_ENU,_AZ.EL.D_-_ECEF,_Geodésicas.py
+│  │  ├─ 04_ENU¹,_AZ.EL.D¹_-_ENU²,_AZ.EL.D.².py
+│  │  ├─ 05_ECEF_-_Geodésicas,_ENU,_AZ.EL.D..py
+│  │  └─ 06_Velocidade,_Aceleração.py
+│  └─ main.py
+├─ .gitignore
+├─ install_debian.sh
+├─ LICENSE
+├─ README.md
+├─ requirements.txt
+└─ run.sh
 ```  
 
 ## Bibliotecas Utilizadas
