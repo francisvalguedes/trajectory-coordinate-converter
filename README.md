@@ -13,6 +13,9 @@ A aplicação possui as páginas principais:
 6. **Conversão de Coordenadas Geocentricas X,Y,Z para plano local ENU**: Converte coordenadas geocêntricas cartesianas (XYZ) para plano local ENU (XYZ) e azimute, elevação e distância, e também para geodésicas .
 7. **Velocidade e Aceleração de Trajetória ENU**:  Realiza cálculos de velocidade e aceleração no sistema ENU x, y, z e azimute elevação e distância no referencial do sensor, a partir de trajetórias nominais cartesianas sem ruído em referenciais locais do ponto de partida do veículo.
 
+## Imagem dos sistemas de referência envolvidos
+
+<img src="figures/fig_ecef.png" width="600" />
 
 ## Pré-requisitos  
 
