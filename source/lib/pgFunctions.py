@@ -110,6 +110,10 @@ def find_coord_geod(df):
     """
     Ajusta e arquivo de configuração dos pontos de referência.
     """
+    if 'Altitude(m)' in df.columns:
+        if 'height' not in df.columns:
+            df['height'] = df['Altitude(m)']
+
     colunas_esperadas = ['lat', 'lon', 'height']
     if not all(col in df.columns for col in colunas_esperadas):
         st.error("Verifique se as colunas obrigatórias estão presentes", icon=cn.ERROR)
@@ -125,7 +129,7 @@ def sensor_registration():
     lc_name = lc_expander.text_input('Nome', "minha localização")
     latitude = lc_expander.number_input('Latitude', -90.0, 90.0, 0.0, format="%.6f")
     longitude = lc_expander.number_input('Longitude', -180.0, 180.0, 0.0, format="%.6f")
-    height = lc_expander.number_input('Altitude (m)', -1000.0, 2000.0, 0.0, format="%.6f")
+    height = lc_expander.number_input('Altitude (m)', 0.0, format="%.6f")
     color = lc_expander.text_input('Cor', "red")
 
     lc_expander.write("Registre o local do ponto de referência no servidor, somente o administrador poderá apagar e ficará disponível para outros usuários:")

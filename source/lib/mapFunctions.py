@@ -8,6 +8,7 @@ import geopandas as gpd
 import streamlit as st
 from lib.constants import  ConstantsNamespace
 import json
+import numpy as np
 
 cn = ConstantsNamespace()
 
@@ -27,6 +28,9 @@ def data_map_concat(df_p , df_s, df_s1 = pd.DataFrame()):
         df_p = df_p.iloc[::interval]
         df_p = pd.concat([pd.DataFrame([first_point]), df_p, pd.DataFrame([last_point])])
         st.info('Muitos dados para o mapa, selecionados o primeiro, o ultimo e mais ' + str(max_points) + ' pontos intermediários da série de dados', icon=cn.WARNING )
+
+    if 'D' in df_p.columns:
+        df_p['color'] = np.where(df_p['D'] == 'A', 'green', 'red')
 
     df_s['sensor'] = 1
     if len(df_s1.index>0):
@@ -53,6 +57,7 @@ def data_map_concat(df_p , df_s, df_s1 = pd.DataFrame()):
     'black': '#000000',
     'lightgray': '#d3d3d3'
     }
+
     df['color'] = df.get('color', 'red')
     df['color'] = df['color'].apply(lambda x: x if x in predefined_colors else 'red')
     # Criar a nova coluna 'color_exadecimal' usando o dicionário
